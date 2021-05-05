@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.32"
+    id("org.jetbrains.kotlin.jvm") version "1.5.0"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
     id("maven-publish")
 }
 
@@ -14,8 +15,6 @@ configure<JavaPluginConvention> {
 }
 
 repositories {
-    jcenter()
-    maven("https://jitpack.io")
     maven {
         url = uri("https://m2.dv8tion.net/releases")
         name = "m2-dv8tion"
@@ -24,9 +23,13 @@ repositories {
     mavenLocal()
 }
 
+
+val ktor = "1.5.4"
+val kotlin = "1.5.0"
+val kotlinX = "1.4.3"
 dependencies {
     // https://bintray.com/dv8fromtheworld/maven/JDA/
-    implementation("net.dv8tion:JDA:4.2.1_256")
+    implementation("net.dv8tion:JDA:4.2.1_262")
 
     // https://github.com/sedmelluq/lavaplayer
     api("com.sedmelluq:lavaplayer:1.3.76")
@@ -35,19 +38,20 @@ dependencies {
     implementation("io.prometheus:simpleclient:0.10.0")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinX")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$kotlinX")
 
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-cio
-    implementation("io.ktor:ktor:1.5.3")
-    implementation("io.ktor:ktor-client-okhttp:1.5.3")
-    implementation("io.ktor:ktor-client-websockets:1.5.3")
+    implementation("io.ktor:ktor:$ktor")
+    implementation("io.ktor:ktor-client-okhttp:$ktor")
+    implementation("io.ktor:ktor-client-websockets:$ktor")
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     implementation("org.slf4j:slf4j-api:1.7.30")
@@ -74,16 +78,19 @@ tasks {
 }
 
 publishing {
+    repositories {
+        maven {
+            url = uri("https://nexus.melijn.com/repository/maven-releases/")
+            credentials {
+                username = property("melijnPublisher").toString()
+                password = property("melijnPassword").toString()
+            }
+        }
+    }
     publications {
         register("mavenJava", MavenPublication::class) {
-            groupId = rootProject.group as String
-            artifactId = "Lavalink-Klient"
-
             from(components["java"])
             artifact(sourcesJar.get())
         }
-    }
-    repositories {
-        mavenLocal()
     }
 }
