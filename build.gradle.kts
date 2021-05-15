@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "me.melijn.llklient"
-version = "2.1.5"
+version = "2.1.6"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_15
@@ -23,10 +23,10 @@ repositories {
     mavenLocal()
 }
 
-
 val ktor = "1.5.4"
 val kotlin = "1.5.0"
-val kotlinX = "1.4.3"
+val kotlinX = "1.5.0"
+
 dependencies {
     // https://bintray.com/dv8fromtheworld/maven/JDA/
     implementation("net.dv8tion:JDA:4.2.1_262")
