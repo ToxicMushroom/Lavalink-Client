@@ -3,13 +3,11 @@ package me.melijn.llklient.io
 
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.websocket.ClientWebSocketSession
-import io.ktor.client.features.websocket.WebSockets
-import io.ktor.client.features.websocket.webSocketSession
-import io.ktor.client.request.header
-import io.ktor.http.HttpMethod
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.websocket.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +77,7 @@ class LavalinkSocket internal constructor(
                 client.close(CloseReason(CloseReason.Codes.INTERNAL_ERROR, "IO Error, timeout perhaps"))
 
             } catch (e: Throwable) {
-
+                e.printStackTrace()
                 onClose(1000, "error on client side")
                 client.close(CloseReason(CloseReason.Codes.NORMAL, "encountered an error on client side"))
             }

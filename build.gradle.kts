@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "me.melijn.llklient"
-version = "2.1.6"
+version = "2.1.7"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_15

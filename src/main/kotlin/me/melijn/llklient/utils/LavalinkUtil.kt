@@ -51,10 +51,8 @@ class LavalinkUtil {
          * @return the AudioTrack
          * @throws IOException if there is an IO problem
          */
-        fun toAudioTrack(message: ByteArray): AudioTrack {
-            ByteArrayInputStream(message).use { bais ->
-                return PLAYER_MANAGER.decodeTrack(MessageInput(bais)).decodedTrack
-            }
+        private fun toAudioTrack(message: ByteArray): AudioTrack {
+            return PLAYER_MANAGER.decodeTrack(MessageInput(ByteArrayInputStream(message))).decodedTrack
         }
 
         /**
