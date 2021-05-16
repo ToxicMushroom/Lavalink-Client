@@ -77,7 +77,7 @@ class LavalinkSocket internal constructor(
                 client.close(CloseReason(CloseReason.Codes.INTERNAL_ERROR, "IO Error, timeout perhaps"))
 
             } catch (e: Throwable) {
-                e.printStackTrace()
+                log.error("Error on client side, reconnecting nodes", e)
                 onClose(1000, "error on client side")
                 client.close(CloseReason(CloseReason.Codes.NORMAL, "encountered an error on client side"))
             }
@@ -151,14 +151,13 @@ class LavalinkSocket internal constructor(
 
                     val jsonEx = json.getObject("exception")
                     FriendlyException(
-                        jsonEx.getString("message"),
-                        FriendlyException.Severity.valueOf(jsonEx.getString("severity")),
-                        RuntimeException(jsonEx.getString("cause"))
+                        jsonEx.getString("message", "null"),
+                        FriendlyException.Severity.valueOf(jsonEx.getString("severity", "null")),
+                        RuntimeException(jsonEx.getString("cause", "null"))
                     )
 
                 } else {
-                    RemoteTrackException(json.getString("error"))
-
+                    RemoteTrackException(json.getString("error", "null"))
                 }
                 event = TrackExceptionEvent(
                     player,
