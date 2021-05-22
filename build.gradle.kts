@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "me.melijn.llklient"
-version = "2.1.8"
+version = "2.2.0"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_15
@@ -29,7 +29,7 @@ val kotlinX = "1.5.0"
 
 dependencies {
     // https://bintray.com/dv8fromtheworld/maven/JDA/
-    implementation("net.dv8tion:JDA:4.2.1_262")
+    implementation("net.dv8tion:JDA:4.2.1_265")
 
     // https://github.com/sedmelluq/lavaplayer
     api("com.sedmelluq:lavaplayer:1.3.76")
