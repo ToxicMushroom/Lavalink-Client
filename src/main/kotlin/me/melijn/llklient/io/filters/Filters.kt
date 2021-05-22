@@ -6,16 +6,16 @@ import kotlin.reflect.KSuspendFunction0
 
 
 class Filters(
-        private val player: IPlayer,
-        private val onCommit: KSuspendFunction0<Unit>
+    private val player: IPlayer,
+    private val onCommit: KSuspendFunction0<Unit>
 ) {
 
     /**
-     * @param volume where 1.0f is regular volume. Values greater than 1.0f are allowed, but may cause clipping.
+     * @param volume where 100 is regular volume. Values greater than 100 are allowed, but may cause clipping.
      */
     var volume = DEFAULT_VOLUME
         set(volume) {
-            require(volume >= 0) { "Volume must be greater than 0" }
+            require(volume in 0..1000) { "Volume must be within 0 to 1000" }
             field = volume
         }
 
@@ -23,6 +23,10 @@ class Filters(
     var tremolo: Tremolo? = null
     var timescale: Timescale? = null
     var vibrato: Vibrato? = null
+    var distortion: Distortion? = null
+    var rotation: Rotation? = null
+    var channelMix: ChannelMix? = null
+    var lowPass: LowPass? = null
 
     var bands = FloatArray(BAND_COUNT)
 
@@ -45,6 +49,10 @@ class Filters(
         karaoke = null
         tremolo = null
         vibrato = null
+        distortion = null
+        rotation = null
+        channelMix = null
+        lowPass = null
         return this
     }
 

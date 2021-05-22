@@ -7,14 +7,11 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventListener
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame
 import com.sedmelluq.discord.lavaplayer.track.playback.MutableAudioFrame
-import me.melijn.llklient.io.filters.*
+import me.melijn.llklient.io.filters.Filters
 import me.melijn.llklient.player.event.IPlayerEventListener
-import net.dv8tion.jda.api.utils.data.DataArray
-import net.dv8tion.jda.api.utils.data.DataObject
 
 class LavaplayerPlayerWrapper(private val player: AudioPlayer) : IPlayer {
 
-    // TODO implement filter stuff
     private val eqFac = EqualizerFactory()
     val bands = FloatArray(Equalizer.BAND_COUNT)
 

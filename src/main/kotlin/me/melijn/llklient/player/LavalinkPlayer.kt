@@ -13,8 +13,6 @@ import net.dv8tion.jda.api.utils.data.DataArray
 import net.dv8tion.jda.api.utils.data.DataObject
 import java.io.IOException
 import java.util.concurrent.CopyOnWriteArrayList
-import kotlin.math.max
-import kotlin.math.min
 
 
 class LavalinkPlayer(private val link: Link) : IPlayer {
@@ -115,9 +113,9 @@ class LavalinkPlayer(private val link: Link) : IPlayer {
         checkNotNull(playing) { "Not currently playing anything" }
         check(playing.isSeekable) { "Track cannot be seeked" }
         val json = DataObject.empty()
-        json.put("op", "seek")
-        json.put("guildId", link.guildId.toString())
-        json.put("position", position)
+            .put("op", "seek")
+            .put("guildId", link.guildId.toString())
+            .put("position", position)
         link.getNode(true)?.send(json.toString())
     }
 
@@ -137,7 +135,7 @@ class LavalinkPlayer(private val link: Link) : IPlayer {
     fun emitEvent(event: PlayerEvent) {
         listeners.forEach { listener: IPlayerEventListener ->
             listener.onEvent(
-                    event
+                event
             )
         }
     }
@@ -169,11 +167,9 @@ class LavalinkPlayer(private val link: Link) : IPlayer {
         val node = link.getNode(false) ?: return
 
         val json = DataObject.empty()
-        json.put("op", "filters")
-        json.put("guildId", link.guildId.toString())
-
-        // Volume
-        json.put("volume", filters.volume / 100.0f)
+            .put("op", "filters")
+            .put("guildId", link.guildId.toString())
+            .put("volume", filters.volume / 100.0f)
 
         // Equalizer
         val bands = DataArray.empty()
@@ -182,8 +178,8 @@ class LavalinkPlayer(private val link: Link) : IPlayer {
             i++
             if (f == 0.0f) continue
             val obj = DataObject.empty()
-            obj.put("band", i)
-            obj.put("gain", f)
+                .put("band", i)
+                .put("gain", f)
             bands.add(obj)
         }
         if (bands.length() > 0) json.put("equalizer", bands)
@@ -191,36 +187,74 @@ class LavalinkPlayer(private val link: Link) : IPlayer {
         val timescale: Timescale? = filters.timescale
         if (timescale != null) {
             val obj = DataObject.empty()
-            obj.put("speed", timescale.speed)
-            obj.put("pitch", timescale.pitch)
-            obj.put("rate", timescale.rate)
+                .put("speed", timescale.speed)
+                .put("pitch", timescale.pitch)
+                .put("rate", timescale.rate)
             json.put("timescale", obj)
         }
 
         val karaoke: Karaoke? = filters.karaoke
         if (karaoke != null) {
             val obj = DataObject.empty()
-            obj.put("level", karaoke.level)
-            obj.put("monoLevel", karaoke.monoLevel)
-            obj.put("filterBand", karaoke.filterBand)
-            obj.put("filterWidth", karaoke.filterWidth)
+                .put("level", karaoke.level)
+                .put("monoLevel", karaoke.monoLevel)
+                .put("filterBand", karaoke.filterBand)
+                .put("filterWidth", karaoke.filterWidth)
             json.put("karaoke", obj)
         }
 
         val tremolo: Tremolo? = filters.tremolo
         if (tremolo != null) {
             val obj = DataObject.empty()
-            obj.put("frequency", tremolo.frequency)
-            obj.put("depth", tremolo.depth)
+                .put("frequency", tremolo.frequency)
+                .put("depth", tremolo.depth)
             json.put("tremolo", obj)
         }
 
         val vibrato: Vibrato? = filters.vibrato
         if (vibrato != null) {
             val obj = DataObject.empty()
-            obj.put("frequency", vibrato.frequency)
-            obj.put("depth", vibrato.depth)
+                .put("frequency", vibrato.frequency)
+                .put("depth", vibrato.depth)
             json.put("vibrato", obj)
+        }
+
+        val rotation = filters.rotation
+        if (rotation != null) {
+            val obj = DataObject.empty()
+                .put("rotationHz", rotation.frequency)
+            json.put("rotation", obj)
+        }
+
+        val distortion = filters.distortion
+        if (distortion != null) {
+            val obj = DataObject.empty()
+                .put("sinOffset", distortion.sinOffset)
+                .put("sinScale", distortion.sinScale)
+                .put("cosOffset", distortion.cosOffset)
+                .put("cosScale", distortion.cosScale)
+                .put("tanOffset", distortion.tanOffset)
+                .put("tanScale", distortion.tanScale)
+                .put("offset", distortion.offset)
+                .put("scale", distortion.scale)
+            json.put("distortion", obj)
+        }
+
+        val channelMix = filters.channelMix
+        if (channelMix != null) {
+            val obj = DataObject.empty()
+                .put("leftToLeft",channelMix.leftToLeft)
+                .put("leftToRight", channelMix.leftToRight)
+                .put("rightToLeft", channelMix.rightToLeft)
+                .put("rightToRight", channelMix.rightToRight)
+            json.put("channelMix", obj)
+        }
+
+        val lowPass = filters.lowPass
+        if (lowPass != null) {
+            val obj = DataObject.empty()
+                .put("smoothing", lowPass.smoothing)
+            json.put("lowPass", obj)
         }
 
         node.send(json.toString())
