@@ -2,11 +2,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.20"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
     id("maven-publish")
 }
 
 group = "me.melijn.llklient"
-version = "2.2.2"
+version = "2.2.3"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_15
@@ -18,7 +19,6 @@ repositories {
         url = uri("https://m2.dv8tion.net/releases")
         name = "m2-dv8tion"
     }
-    maven("https://nexus.melijn.com/repository/maven-public/")
     mavenCentral()
     mavenLocal()
 }
@@ -29,7 +29,7 @@ val kotlinX = "1.5.0"
 
 dependencies {
     // https://ci.dv8tion.net/job/JDA/
-    implementation("net.dv8tion:JDA:4.3.0_287")
+    implementation("net.dv8tion:JDA:4.3.0_288")
 
     // https://github.com/sedmelluq/lavaplayer
     api("com.sedmelluq:lavaplayer:1.3.78")
