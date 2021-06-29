@@ -2,12 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.20"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
     id("maven-publish")
 }
 
 group = "me.melijn.llklient"
-version = "2.2.1"
+version = "2.2.2"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_15
@@ -30,10 +29,10 @@ val kotlinX = "1.5.0"
 
 dependencies {
     // https://ci.dv8tion.net/job/JDA/
-    implementation("net.dv8tion:JDA:4.3.0_283")
+    implementation("net.dv8tion:JDA:4.3.0_287")
 
     // https://github.com/sedmelluq/lavaplayer
-    api("com.sedmelluq:lavaplayer:1.3.78-pre")
+    api("com.sedmelluq:lavaplayer:1.3.78")
 
     // https://mvnrepository.com/artifact/io.prometheus/simpleclient
     implementation("io.prometheus:simpleclient:0.10.0")
@@ -71,10 +70,6 @@ tasks {
         kotlinOptions {
             jvmTarget = "15"
         }
-    }
-
-    artifacts {
-        archives(sourcesJar)
     }
 }
 

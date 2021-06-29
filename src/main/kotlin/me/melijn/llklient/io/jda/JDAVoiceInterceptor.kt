@@ -34,7 +34,6 @@ class JDAVoiceInterceptor(private val lavalink: JDALavalink) : VoiceDispatchInte
                 CoroutineScope(Dispatchers.Default).launch {
                     link.onDisconnected()
                 }
-
             }
         } else {
             link.lastChannel = channel.idLong // Change expected channel
